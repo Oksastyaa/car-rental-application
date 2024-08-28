@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"go-struktur-folder/internal/models"
-
+	"car-rental-application/internal/models"
 	"gorm.io/gorm"
 )
 
 type UserRepo interface {
 	CreateUser(user *models.User) error
 	FindByEmail(email string) (*models.User, error)
+	TopUpBalance(Id uint, amount float64) (*models.User, error)
 }
 
 type userRepo struct {
@@ -33,4 +33,19 @@ func (u *userRepo) FindByEmail(email string) (*models.User, error) {
 	}
 	return &user, nil
 
+}
+
+func (u *userRepo) TopUpBalance(Id uint, amount float64) (*models.User, error) {
+	var userToUpdate models.User
+	err := u.DB.Where("id = ?", Id).First(&userToUpdate).Error
+	if err != nil {
+		return nil, err
+	}
+	userToUpdate.DepositAmount += amount
+
+	err = u.DB.Save(&userToUpdate).Error
+	if err != nil {
+		return nil, err
+	}
+	return &userToUpdate, nil
 }

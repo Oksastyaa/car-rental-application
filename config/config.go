@@ -1,9 +1,8 @@
 package config
 
 import (
+	"car-rental-application/internal/migration"
 	"fmt"
-	"go-struktur-folder/internal/migration"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -11,6 +10,8 @@ import (
 	"log"
 	"os"
 )
+
+var DB *gorm.DB
 
 func InitDB() (*gorm.DB, error) {
 	host := os.Getenv("DB_HOST")

@@ -1,20 +1,23 @@
 package service
 
 import (
+	"car-rental-application/internal/models"
+	"car-rental-application/internal/repository"
+	"car-rental-application/pkg"
 	"errors"
-	"go-struktur-folder/internal/models"
-	"go-struktur-folder/internal/repository"
-	"go-struktur-folder/pkg"
+	"gorm.io/gorm"
 )
 
 type UserService interface {
 	RegisterUser(user *models.User) error
 	LoginUser(email string, password string) (string, error)
+	TopUpBalance(Id uint, amount float64) (*models.User, error)
 }
 
 type userService struct {
 	userRepo  repository.UserRepo
 	jwtSecret string
+	DB        *gorm.DB
 }
 
 func NewUserService(userRepo repository.UserRepo, jwtSecret string) UserService {
@@ -64,4 +67,12 @@ func (u *userService) LoginUser(email string, password string) (string, error) {
 		return "", err
 	}
 	return token, nil
+}
+
+func (u *userService) TopUpBalance(Id uint, amount float64) (*models.User, error) {
+	user, err := u.userRepo.TopUpBalance(Id, amount)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

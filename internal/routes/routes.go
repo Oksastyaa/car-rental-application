@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"go-struktur-folder/internal/controller"
-	"go-struktur-folder/internal/repository"
-	"go-struktur-folder/internal/service"
-
+	"car-rental-application/internal/controller"
+	"car-rental-application/internal/middleware"
+	"car-rental-application/internal/repository"
+	"car-rental-application/internal/service"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -18,6 +18,7 @@ func RegisterRoutes(e *echo.Echo, c *Controller, jwtSecret []byte) {
 	r := e.Group("/api/v1/users")
 	r.POST("/register", c.UserController.RegisterUser)
 	r.POST("/login", c.UserController.LoginUser)
+	r.POST("/deposit", c.UserController.TopUpBalance, middleware.JWTMiddleware(jwtSecret))
 
 }
 

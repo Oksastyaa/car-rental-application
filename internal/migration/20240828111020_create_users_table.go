@@ -1,7 +1,7 @@
 package migration
 
 import (
-	"Rental-Mobil-App/internal/models"
+	"car-rental-application/internal/models"
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"
 )

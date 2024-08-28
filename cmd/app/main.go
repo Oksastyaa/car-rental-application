@@ -1,12 +1,12 @@
 package main
 
 import (
+	"car-rental-application/config"
+	"car-rental-application/internal/routes"
+	"car-rental-application/pkg"
 	"context"
 	"errors"
 	"fmt"
-	"go-struktur-folder/config"
-	"go-struktur-folder/internal/routes"
-	"go-struktur-folder/pkg"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"

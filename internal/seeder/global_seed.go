@@ -7,5 +7,8 @@ import (
 
 func SeedAll(db *gorm.DB) {
 	SeedUsers(db)
+	SeedCars(db)
+	SeedRentals(db)
+	SeedTransactions(db)
 	logrus.Println("Seed all success")
 }

@@ -1,4 +1,4 @@
-module Rental-Mobil-App
+module car-rental-application
 
 go 1.23.0
 

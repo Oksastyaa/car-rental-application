@@ -1,8 +1,8 @@
 package migration
 
 import (
+	"car-rental-application/internal/seeder"
 	"fmt"
-	"go-struktur-folder/internal/seeder"
 	"os"
 
 	"github.com/go-gormigrate/gormigrate/v2"
@@ -14,6 +14,9 @@ import (
 func Migrate(db *gorm.DB) error {
 	migrations := []*gormigrate.Migration{
 		createUsersTableMigration(),
+		createCarsTableMigration(),
+		createRentalsTableMigration(),
+		createTransactionsTableMigration(),
 	}
 
 	m := gormigrate.New(db, &gormigrate.Options{
