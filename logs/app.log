@@ -1,0 +1,53 @@
+time="2024-08-23 21:25:50" level=fatal msg="Error loading .env file: open .env: The system cannot find the file specified." Environment=Production
+time="2024-08-26 23:52:26" level=fatal msg="Error loading .env file: open .env: The system cannot find the file specified." Environment=Production
+time="2024-08-28 12:20:59" level=info msg="Running AutoMigrate..." Environment=Development
+time="2024-08-28 12:20:59" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 12:21:00" level=info msg="Seed users success" Environment=Development
+time="2024-08-28 12:21:00" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 12:21:00" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 12:21:00" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 12:22:20" level=info msg="Running AutoMigrate..." Environment=Development
+time="2024-08-28 12:22:20" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 12:22:21" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 12:22:21" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 12:22:21" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 12:22:43" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-28 12:22:43" level=info msg="Server exiting" Environment=Development
+time="2024-08-28 12:22:45" level=info msg="Running AutoDrop (Rollback all migrations) and AutoMigrate..." Environment=Development
+time="2024-08-28 12:22:45" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 12:22:46" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 12:22:46" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 12:22:46" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 12:23:23" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-28 12:23:23" level=info msg="Server exiting" Environment=Development
+time="2024-08-28 12:23:25" level=info msg="Running AutoDrop (Rollback all migrations) and AutoMigrate..." Environment=Development
+time="2024-08-28 12:23:25" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 12:23:26" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 12:23:26" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 12:23:26" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 12:23:50" level=info msg="Running AutoDrop (Rollback all migrations) and AutoMigrate..." Environment=Development
+time="2024-08-28 12:23:50" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 12:23:50" level=info msg="Seed users success" Environment=Development
+time="2024-08-28 12:23:50" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 12:23:50" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 12:23:50" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 12:24:10" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-28 12:24:10" level=info msg="Server exiting" Environment=Development
+time="2024-08-28 14:18:22" level=info msg="Running AutoDrop (Rollback all migrations) and AutoMigrate..." Environment=Development
+time="2024-08-28 14:18:22" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 14:18:23" level=info msg="Seed users success" Environment=Development
+time="2024-08-28 14:18:23" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 14:18:23" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 14:18:23" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 14:23:31" level=info msg="Running AutoDrop (Rollback all migrations) and AutoMigrate..." Environment=Development
+time="2024-08-28 14:23:31" level=info msg="Running Seeders..." Environment=Development
+time="2024-08-28 14:23:32" level=info msg="Seed users success" Environment=Development
+time="2024-08-28 14:23:32" level=info msg="Seed all success" Environment=Development
+time="2024-08-28 14:23:32" level=info msg="AutoMigrate and Seeders completed." Environment=Development
+time="2024-08-28 14:23:32" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-28 14:26:48" level=info msg="HTTP request" Environment=Development content_length=129 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=0s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=0 status=200 uri=/api/v1/users user_agent=PostmanRuntime/7.41.2
+time="2024-08-28 14:27:00" level=info msg="HTTP request" Environment=Development content_length=129 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=0s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=105 status=400 uri=/api/v1/users/register user_agent=PostmanRuntime/7.41.2
+time="2024-08-28 14:27:38" level=info msg="HTTP request" Environment=Development content_length=200 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=54.9414ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=91 status=201 uri=/api/v1/users/register user_agent=PostmanRuntime/7.41.2
+time="2024-08-28 14:28:11" level=info msg="HTTP request" Environment=Development content_length=69 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=55.9267ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=184 status=200 uri=/api/v1/users/login user_agent=PostmanRuntime/7.41.2
+time="2024-08-28 14:28:22" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-28 14:28:22" level=info msg="Server exiting" Environment=Development
