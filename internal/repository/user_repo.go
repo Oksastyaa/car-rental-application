@@ -8,7 +8,8 @@ import (
 type UserRepo interface {
 	CreateUser(user *models.User) error
 	FindByEmail(email string) (*models.User, error)
-	TopUpBalance(Id uint, amount float64) (*models.User, error)
+	TopUpBalance(Id uint, newBalance float64) (*models.User, error)
+	FindByID(Id uint) (*models.User, error)
 }
 
 type userRepo struct {
@@ -35,17 +36,26 @@ func (u *userRepo) FindByEmail(email string) (*models.User, error) {
 
 }
 
-func (u *userRepo) TopUpBalance(Id uint, amount float64) (*models.User, error) {
+func (u *userRepo) TopUpBalance(Id uint, newBalance float64) (*models.User, error) {
 	var userToUpdate models.User
 	err := u.DB.Where("id = ?", Id).First(&userToUpdate).Error
 	if err != nil {
 		return nil, err
 	}
-	userToUpdate.DepositAmount += amount
+	userToUpdate.DepositAmount += newBalance
 
 	err = u.DB.Save(&userToUpdate).Error
 	if err != nil {
 		return nil, err
 	}
 	return &userToUpdate, nil
+}
+
+func (u *userRepo) FindByID(Id uint) (*models.User, error) {
+	var user models.User
+	err := u.DB.Where("id = ?", Id).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

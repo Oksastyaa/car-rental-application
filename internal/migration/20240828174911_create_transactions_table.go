@@ -16,7 +16,7 @@ func createTransactionsTableMigration() *gormigrate.Migration {
 			)
 		},
 		Rollback: func(tx *gorm.DB) error {
-			return tx.Migrator().DropTable("transactions")
+			return tx.Migrator().DropTable(&models.Transaction{})
 		},
 	}
 }

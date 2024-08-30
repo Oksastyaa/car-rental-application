@@ -8,13 +8,12 @@ import (
 	"time"
 )
 
-// SeedRentals seeds the rentals table with sample data
+// SeedRentals reseeds the rentals table with sample data
 func SeedRentals(db *gorm.DB) {
 	var rentals []models.Rental
 	var users []models.User
 	var cars []models.Car
 
-	// Retrieve users and cars to associate with rentals
 	db.Find(&users)
 	db.Find(&cars)
 
@@ -32,12 +31,15 @@ func SeedRentals(db *gorm.DB) {
 			RentalEndDate:   &endDate,
 			TotalCost:       float64(rand.Intn(500000) + 1000000),
 		}
+
+		if err := db.Create(&rental).Error; err != nil {
+			log.Fatalf("Failed to create rental: %v", err)
+		} else {
+			log.Printf("Rental created successfully with ID: %d", rental.ID)
+		}
+
 		rentals = append(rentals, rental)
 	}
 
-	if err := db.Create(&rentals).Error; err != nil {
-		log.Fatalf("Failed to seed rentals: %v", err)
-	} else {
-		log.Println("Seed rentals success")
-	}
+	log.Println("Seed rentals success")
 }

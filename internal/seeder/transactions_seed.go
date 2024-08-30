@@ -5,28 +5,36 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
 // SeedTransactions seeds the transactions table with sample data
 func SeedTransactions(db *gorm.DB) {
 	var transactions []models.Transaction
-	var users []models.User
+	var rentals []models.Rental
 
-	db.Find(&users)
+	if err := db.Find(&rentals).Error; err != nil {
+		log.Fatalf("Failed to fetch rentals: %v", err)
+	}
 
-	transactionTypes := []string{"top_up", "rent_payment", "refund"}
+	transactionTypes := []string{"paid", "unpaid", "refund"}
+	paymentMethod := []string{"cash", "credit card", "debit card"}
+	PaymentProvider := []string{"Xendit", "OVO", "GoPay"}
 
-	for i := 1; i <= 20; i++ {
-		user := users[rand.Intn(len(users))]
-		transactionType := transactionTypes[rand.Intn(len(transactionTypes))]
-
+	for _, rental := range rentals {
 		transaction := models.Transaction{
-			UserID:          user.ID,
-			Amount:          float64(rand.Intn(500000) + 100000),
-			TransactionType: transactionType,
-			TransactionDate: time.Now().AddDate(0, 0, -rand.Intn(30)),
+			UserID:            rental.UserID,
+			Amount:            rental.TotalCost,
+			TransactionStatus: transactionTypes[rand.Intn(len(transactionTypes))],
+			TransactionDate:   time.Now().AddDate(0, 0, -rand.Intn(30)),
+			InvoiceID:         "TRX-" + time.Now().Format("20060102") + randSeq(5),
+			RentalID:          rental.ID,
+			PaymentMethod:     paymentMethod[rand.Intn(len(paymentMethod))],
+			PaymentProvider:   PaymentProvider[rand.Intn(len(PaymentProvider))],
+			Description:       "Transaction for rental ID " + strconv.Itoa(int(rental.ID)),
 		}
+
 		transactions = append(transactions, transaction)
 	}
 
@@ -35,4 +43,13 @@ func SeedTransactions(db *gorm.DB) {
 	} else {
 		log.Println("Seed transactions success")
 	}
+}
+
+func randSeq(i int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+	b := make([]rune, i)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

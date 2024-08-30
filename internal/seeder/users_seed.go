@@ -12,9 +12,9 @@ import (
 
 func SeedUsers(db *gorm.DB) {
 	var users []models.User
+	roles := []string{"admin", "user"}
 	for i := 1; i <= 15; i++ {
 		password, _ := pkg.HashPassword("test12345")
-		roles := []string{"admin", "user"}
 		role := roles[rand.Intn(len(roles))]
 		user := models.User{
 			Email:         pkg.RandomEmail(),
@@ -26,7 +26,8 @@ func SeedUsers(db *gorm.DB) {
 		users = append(users, user)
 	}
 	if err := db.Create(&users).Error; err != nil {
-		return
+		logrus.Fatalf("Failed to seed users: %v", err)
+	} else {
+		logrus.Println("Seed users success")
 	}
-	logrus.Println("Seed users success")
 }

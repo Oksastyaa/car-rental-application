@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -20,19 +21,15 @@ func JWTMiddleware(jwtKey []byte) echo.MiddlewareFunc {
 			var status int
 			var message string
 
-			switch err.Error() {
-			case "missing or malformed jwt":
-				status = http.StatusBadRequest
-				message = "Missing or malformed JWT"
-			case jwt.ErrSignatureInvalid.Error():
-				status = http.StatusUnauthorized
-				message = "Invalid signature"
-			case "token is expired":
-				status = http.StatusUnauthorized
-				message = "Token is expired please login again"
-			default:
-				status = http.StatusUnauthorized
-				message = "UNAUTHORIZED so you can't access this route"
+			var ve *jwt.ValidationError
+			if errors.As(err, &ve) {
+				if ve.Errors&jwt.ValidationErrorExpired != 0 {
+					status = http.StatusUnauthorized
+					message = "Token has expired"
+				} else if ve.Errors&jwt.ValidationErrorSignatureInvalid != 0 {
+					status = http.StatusUnauthorized
+					message = "Invalid token signature"
+				}
 			}
 
 			return c.JSON(status, map[string]string{"error": message})

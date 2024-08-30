@@ -1,10 +1,14 @@
 package service
 
 import (
+	"car-rental-application/config"
 	"car-rental-application/internal/models"
 	"car-rental-application/internal/repository"
 	"car-rental-application/pkg"
+	"context"
 	"errors"
+	"fmt"
+	"github.com/xendit/xendit-go/v6/common"
 	"gorm.io/gorm"
 )
 
@@ -70,9 +74,35 @@ func (u *userService) LoginUser(email string, password string) (string, error) {
 }
 
 func (u *userService) TopUpBalance(Id uint, amount float64) (*models.User, error) {
-	user, err := u.userRepo.TopUpBalance(Id, amount)
+	accountType := "CASH"
+
+	currency := "IDR"
+
+	resp, _, err := config.XenditClient.BalanceApi.GetBalance(context.Background()).
+		AccountType(accountType).
+		Currency(currency).
+		Execute()
+
 	if err != nil {
-		return nil, err
+		var xenditErr *common.XenditSdkError
+		if errors.As(err, &xenditErr) {
+			fmt.Printf("Error when calling `BalanceApi.GetBalance`: %v\n", xenditErr.Error())
+
+			if xenditErr.FullError() != nil {
+				fmt.Printf("Status Code: %v\n", xenditErr.Status())
+			}
+			fmt.Printf("Error Code: %v\n", xenditErr.Status())
+			if xenditErr.FullError() != nil {
+				fmt.Printf("Error Message: %v\n", xenditErr.Status())
+			}
+
+			return nil, fmt.Errorf("failed to get balance from Xendit: %v", xenditErr.FullError())
+		}
 	}
+	currentBalance := resp.Balance
+	newBalance := currentBalance + float32(amount)
+
+	user, _ := u.userRepo.TopUpBalance(Id, float64(newBalance))
+
 	return user, nil
 }

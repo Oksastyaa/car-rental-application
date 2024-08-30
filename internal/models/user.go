@@ -11,7 +11,7 @@ type User struct {
 	Password      string  `gorm:"not null" json:"password" validate:"required,min=6"`
 	DepositAmount float64 `gorm:"default:0;not null" json:"deposit_amount" validate:"numeric"`
 	Age           int     `gorm:"not null" json:"age" validate:"required"`
-	Role          string  `gorm:"type:enum('admin','user');not null" json:"role" validate:"required,oneof=admin user"` // Only accept 'admin' or 'user'
+	Role          string  `gorm:"type:varchar(255);not null" json:"role" validate:"required,oneof=admin user"` // Menggunakan varchar(255) untuk kolom Role
 	Token         string  `gorm:"type:varchar(255);" json:"token"`
 }
 

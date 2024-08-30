@@ -16,7 +16,7 @@ func createUsersTableMigration() *gormigrate.Migration {
 			)
 		},
 		Rollback: func(tx *gorm.DB) error {
-			return tx.Migrator().DropTable("users")
+			return tx.Migrator().DropTable(&models.User{})
 		},
 	}
 }

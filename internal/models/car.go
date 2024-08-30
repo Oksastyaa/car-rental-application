@@ -8,9 +8,9 @@ import (
 type Car struct {
 	gorm.Model
 	Name              string  `gorm:"not null" json:"name" validate:"required"`
-	StockAvailability int     `gorm:"not null" json:"stock_availability" validate:"required,min=0"`
+	StockAvailability int     `gorm:"not null" json:"stock_availability" validate:"gt=0"`
 	RentalCost        float64 `gorm:"not null" json:"rental_cost" validate:"required,gt=0"`
-	Category          string  `gorm:"not null" json:"category" validate:"required"`
+	Brands            string  `gorm:"not null" json:"brands" validate:"required"`
 }
 
 func (c *Car) Validate() error {

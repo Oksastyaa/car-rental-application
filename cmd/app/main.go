@@ -29,6 +29,9 @@ func main() {
 		logrus.Fatalf("Error loading .env file: %v", err)
 	}
 
+	// xendit client
+	config.InitXendit()
+
 	// initialize database connection
 	db, err := config.InitDB()
 	if err != nil {
