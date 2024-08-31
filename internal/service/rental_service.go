@@ -54,10 +54,10 @@ func (s *rentalService) BookCar(rental *models.Rental) (*models.Rental, error) {
 		InvoiceID:         fmt.Sprintf("trx-%s", time.Now().Format("20060102150405")),
 		Amount:            rental.TotalCost,
 		TransactionStatus: "unpaid",
-		PaymentMethod:     rental.Transaction.PaymentMethod,
-		PaymentProvider:   rental.Transaction.PaymentProvider,
-		Description:       fmt.Sprintf("Pembayaran rental mobil untuk Mr/Mrs %s dari tanggal %s sampai dengan tanggal %s", userEmail, rental.RentalStartDate.Format("2006-01-02"), rental.RentalEndDate.Format("2006-01-02")),
-		TransactionDate:   time.Now(),
+		//PaymentMethod:     rental.Transaction.PaymentMethod,
+		//PaymentProvider:   rental.Transaction.PaymentProvider,
+		Description:     fmt.Sprintf("Pembayaran rental mobil untuk Mr/Mrs %s dari tanggal %s sampai dengan tanggal %s", userEmail, rental.RentalStartDate.Format("2006-01-02"), rental.RentalEndDate.Format("2006-01-02")),
+		TransactionDate: time.Now(),
 	}
 
 	_, err = s.transactionRepo.CreateTransaction(transaction)

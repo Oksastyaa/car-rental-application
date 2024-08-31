@@ -22,9 +22,10 @@ type transactionController struct {
 
 func (t *transactionController) UpdateTransactionStatus(c echo.Context) error {
 	var payload struct {
-		ExternalID  string `json:"external_id"`
-		Status      string `json:"status"`
-		PaymentType string `json:"payment_type"`
+		ExternalID     string `json:"external_id"`
+		Status         string `json:"status"`
+		PaymentMethod  string `json:"payment_method"`
+		PaymentChannel string `json:"payment_channel"`
 	}
 	if err := c.Bind(&payload); err != nil {
 		return pkg.RespondJSON(c, http.StatusBadRequest, nil, "Invalid payload: "+err.Error())
@@ -33,11 +34,11 @@ func (t *transactionController) UpdateTransactionStatus(c echo.Context) error {
 		return pkg.RespondJSON(c, http.StatusBadRequest, nil, "ExternalID or Status missing in request payload")
 	}
 	if payload.Status == "PAID" {
-		err := t.transactionService.UpdateTransactionStatus(payload.ExternalID, "paid")
+		err := t.transactionService.UpdateTransactionStatus(payload.ExternalID, "paid", payload.PaymentMethod, payload.PaymentChannel)
 		if err != nil {
 			return pkg.RespondJSON(c, http.StatusInternalServerError, nil, "Failed to update transaction status: "+err.Error())
 		}
-		return pkg.RespondJSON(c, http.StatusOK, nil, "Transaction status updated to paid successfully")
+		return pkg.RespondJSON(c, http.StatusOK, payload, "Transaction status updated to paid successfully")
 	}
 	return pkg.RespondJSON(c, http.StatusBadRequest, nil, "Unexpected payment status")
 }

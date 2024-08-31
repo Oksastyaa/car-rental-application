@@ -14,8 +14,8 @@ type Transaction struct {
 	TransactionStatus string    `gorm:"type:varchar(50);not null" json:"transaction_status" validate:"required,oneof=paid unpaid refund"`
 	TransactionDate   time.Time `gorm:"not null" json:"transaction_date" validate:"required"`
 	InvoiceID         string    `gorm:"type:varchar(100);not null" json:"invoice_id" validate:"required"`
-	PaymentMethod     string    `gorm:"type:varchar(50);not null" json:"payment_method" validate:"required,oneof=credit_card bank_transfer e_wallet"`
-	PaymentProvider   string    `gorm:"type:varchar(50);not null" json:"payment_provider" validate:"required"`
+	PaymentMethod     string    `gorm:"type:varchar(50);not null" json:"payment_method" validate:"oneof=credit_card bank_transfer e_wallet"`
+	PaymentProvider   string    `gorm:"type:varchar(50);not null" json:"payment_provider" `
 	Description       string    `gorm:"type:text" json:"description"`
 }
 
