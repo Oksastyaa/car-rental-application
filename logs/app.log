@@ -1630,3 +1630,35 @@ time="2024-08-31 19:15:38" level=info msg="Starting server on port 8080..." Envi
 time="2024-08-31 19:16:07" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
 time="2024-08-31 19:16:07" level=info msg="Starting server on port 8080..." Environment=Development
 time="2024-08-31 19:16:08" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=7.5952ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=812 status=201 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 20:53:56" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-31 20:53:56" level=info msg="Server exiting" Environment=Development
+time="2024-08-31 21:08:36" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:08:36" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:13:20" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:13:20" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:13:35" level=info msg="HTTP request" Environment=Development content_length=87 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=80.5157ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=183 status=200 uri=/api/v1/users/login user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:13:50" level=info msg="HTTP request" Environment=Development content_length=0 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=0s method=GET protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=26 status=401 uri=/api/v1/admin/transactions/101 user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:14:22" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=3.0850317s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=93 status=500 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:15:42" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:15:42" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:15:50" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=3.6594297s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=93 status=500 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:27:38" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:27:38" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:36:49" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:36:49" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:37:20" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=3.2475595s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=517 status=500 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:38:47" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:38:47" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:39:01" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:39:01" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:41:43" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:41:43" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:41:48" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=2.6248339s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=809 status=201 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:49:39" level=info msg="HTTP request" Environment=Development content_length=135 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=55.762ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=94 status=201 uri=/api/v1/users/register user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:50:03" level=info msg="HTTP request" Environment=Development content_length=79 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=54.4878ms method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=183 status=200 uri=/api/v1/users/login user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:50:30" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=4.7751879s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=806 status=201 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 21:59:24" level=info msg="Skipping AutoMigrate and AutoDrop." Environment=Development
+time="2024-08-31 21:59:24" level=info msg="Starting server on port 8080..." Environment=Development
+time="2024-08-31 21:59:30" level=info msg="HTTP request" Environment=Development content_length=282 cookies="[]" handler_name=main.main.Recover.RecoverWithConfig.func2.1 host="localhost:8080" ip="::1" latency=3.2344053s method=POST protocol=HTTP/1.1 query_params="" referer="" request_id="" response_size=809 status=201 uri=/api/v1/users/rentals user_agent=PostmanRuntime/7.41.2
+time="2024-08-31 22:09:04" level=info msg="Shutting down server..." Environment=Development
+time="2024-08-31 22:09:04" level=info msg="Server exiting" Environment=Development

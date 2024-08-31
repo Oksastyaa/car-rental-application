@@ -4,6 +4,7 @@ import (
 	"car-rental-application/config"
 	"car-rental-application/internal/models"
 	"car-rental-application/internal/repository"
+	"car-rental-application/pkg"
 	"context"
 	"fmt"
 	"github.com/xendit/xendit-go/v6/invoice"
@@ -66,20 +67,24 @@ func (s *rentalService) BookCar(rental *models.Rental) (*models.Rental, error) {
 
 	newRental.Transaction = *transaction
 
-	//invoiceID := fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
-	//invoiceUrl, err := s.CreateXenditInvoice(invoiceID, userEmail, rental.TotalCost)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//subject := "Konfirmasi Booking"
-	//emailBody := fmt.Sprintf("Booking Anda telah berhasil dibuat. Total yang harus dibayar adalah Rp%.2f. Silakan bayar melalui tautan berikut: %s", rental.TotalCost, invoiceUrl)
-	//err = pkg.SendEmail(userEmail, subject, emailBody)
-	//if err != nil {
-	//	return nil, err
-	//}
-
+	invoiceID := fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
+	invoiceUrl, err := s.CreateXenditInvoice(invoiceID, userEmail, rental.TotalCost)
+	if err != nil {
+		return nil, err
+	}
+	err = s.SendBookingConfirmation(userEmail, invoiceUrl, rental.TotalCost)
 	return newRental, nil
+}
+
+func (s *rentalService) SendBookingConfirmation(userMail, invoiceUrl string, totalCost float64) error {
+	subject := "Konfirmasi Booking"
+	plainTextContent := fmt.Sprintf("Booking Anda telah berhasil dibuat. Total yang harus dibayar adalah Rp%.2f. Silakan bayar melalui tautan berikut: %s", totalCost, invoiceUrl)
+	htmlContent := fmt.Sprintf("<p>Booking Anda telah berhasil dibuat.</p><p>Total yang harus dibayar adalah Rp%.2f.</p><p>Silakan bayar melalui tautan berikut: <a href='%s'>%s</a></p>", totalCost, invoiceUrl, invoiceUrl)
+	err := pkg.SendEmail(userMail, subject, plainTextContent, htmlContent)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 func (s *rentalService) GetRentalByID(id uint) (*models.Rental, error) {
 	return s.rentalRepo.GetRentalByID(id)
