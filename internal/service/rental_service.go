@@ -33,47 +33,59 @@ func NewRentalService(rentalRepo repository.RentalRepository, transactionRepo re
 
 func (s *rentalService) BookCar(rental *models.Rental) (*models.Rental, error) {
 	if rental.TotalCost <= 0 {
-		return nil, nil
+		return nil, fmt.Errorf("total cost must be greater than 0")
 	}
 
+	// Buat rental baru
 	newRental, err := s.rentalRepo.CreateRental(rental)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
-	if newRental.ID == 0 {
-		return nil, nil
-	}
-
-	newRental.Transaction.RentalID = newRental.ID
-	newRental.Transaction.UserID = newRental.UserID
-	newRental.Transaction.InvoiceID = fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
-	newRental.Transaction.Amount = rental.TotalCost
-	newRental.Transaction.TransactionStatus = "unpaid"
-	newRental.Transaction.PaymentMethod = rental.Transaction.PaymentMethod
-	newRental.Transaction.PaymentProvider = rental.Transaction.PaymentProvider
-	newRental.Transaction.Description = fmt.Sprintf("Pembayaran rental mobil untuk %s", rental.RentalStartDate.Format("2006-01-02"))
 
 	user, err := s.userRepo.FindByID(rental.UserID)
 	if err != nil {
-		return nil, nil
+		return nil, fmt.Errorf("failed to find user: %w", err)
 	}
+
 	userEmail := user.Email
+	transaction := &models.Transaction{
+		RentalID:          newRental.ID,
+		UserID:            rental.UserID,
+		InvoiceID:         fmt.Sprintf("trx-%s", time.Now().Format("20060102150405")),
+		Amount:            rental.TotalCost,
+		TransactionStatus: "unpaid",
+		//PaymentMethod:     rental.Transaction.PaymentMethod,
+		//PaymentProvider:   rental.Transaction.PaymentProvider,
+		Description:     fmt.Sprintf("Pembayaran rental mobil untuk Mr/Mrs %s dari tanggal %s sampai dengan tanggal %s", userEmail, rental.RentalStartDate.Format("2006-01-02"), rental.RentalEndDate.Format("2006-01-02")),
+		TransactionDate: time.Now(),
+	}
+
+	_, err = s.transactionRepo.CreateTransaction(transaction)
+	if err != nil {
+		return nil, err
+	}
+
+	newRental.Transaction = *transaction
+
 	invoiceID := fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
 	invoiceUrl, err := s.CreateXenditInvoice(invoiceID, userEmail, rental.TotalCost)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
-
-	subject := "Konfirmasi Booking"
-	emailBody := fmt.Sprintf("Booking Anda telah berhasil dibuat. Total yang harus dibayar adalah Rp%.2f. Silakan bayar melalui tautan berikut: %s", rental.TotalCost, invoiceUrl)
-	err = pkg.SendEmail(userEmail, subject, emailBody)
-	if err != nil {
-		return nil, nil
-	}
-
+	err = s.SendBookingConfirmation(userEmail, invoiceUrl, rental.TotalCost)
 	return newRental, nil
 }
 
+func (s *rentalService) SendBookingConfirmation(userMail, invoiceUrl string, totalCost float64) error {
+	subject := "Konfirmasi Booking"
+	plainTextContent := fmt.Sprintf("Booking Anda telah berhasil dibuat. Total yang harus dibayar adalah Rp%.2f. Silakan bayar melalui tautan berikut: %s", totalCost, invoiceUrl)
+	htmlContent := fmt.Sprintf("<p>Booking Anda telah berhasil dibuat.</p><p>Total yang harus dibayar adalah Rp%.2f.</p><p>Silakan bayar melalui tautan berikut: <a href='%s'>%s</a></p>", totalCost, invoiceUrl, invoiceUrl)
+	err := pkg.SendEmail(userMail, subject, plainTextContent, htmlContent)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 func (s *rentalService) GetRentalByID(id uint) (*models.Rental, error) {
 	return s.rentalRepo.GetRentalByID(id)
 }

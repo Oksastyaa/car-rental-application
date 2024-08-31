@@ -13,7 +13,7 @@ type Rental struct {
 	RentalStartDate time.Time   `gorm:"not null" json:"rental_start_date" validate:"required"`
 	RentalEndDate   *time.Time  `json:"rental_end_date"`
 	TotalCost       float64     `gorm:"not null" json:"total_cost" validate:"required,gt=0"`
-	Transaction     Transaction `gorm:"foreignKey:RentalID" json:"transaction"`
+	Transaction     Transaction `gorm:"-" json:"transaction"`
 }
 
 func (r *Rental) Validate() error {

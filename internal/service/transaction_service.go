@@ -7,7 +7,7 @@ import (
 )
 
 type TransactionService interface {
-	UpdateTransactionStatus(InvoiceId string, status string) error
+	UpdateTransactionStatus(InvoiceId, status, paymentMethod, paymentProvider string) error
 	GetTransactionById(id uint) (*models.Transaction, error)
 	GetAllTransaction() ([]models.Transaction, error)
 }
@@ -22,12 +22,14 @@ func NewTransactionService(transactionRepo repository.TransactionRepository) Tra
 	}
 }
 
-func (s *transactionService) UpdateTransactionStatus(InvoiceId string, status string) error {
+func (s *transactionService) UpdateTransactionStatus(InvoiceId, status, paymentMethod, paymentProvider string) error {
 	transaction, err := s.transactionRepo.GetTransactionByInvoiceID(InvoiceId)
 	if err != nil {
 		return fmt.Errorf("transaction Not Found: %w", err)
 	}
 	transaction.TransactionStatus = status
+	transaction.PaymentMethod = paymentMethod
+	transaction.PaymentProvider = paymentProvider
 
 	if err := s.transactionRepo.UpdateTransaction(transaction); err != nil {
 		return fmt.Errorf("failed to update transaction: %w", err)

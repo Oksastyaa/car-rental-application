@@ -6,6 +6,7 @@ import (
 )
 
 type TransactionRepository interface {
+	CreateTransaction(transaction *models.Transaction) (*models.Transaction, error)
 	GetTransactionByInvoiceID(invoiceID string) (*models.Transaction, error)
 	UpdateTransaction(transaction *models.Transaction) error
 	GetTransactionByID(id uint) (*models.Transaction, error)
@@ -20,6 +21,14 @@ func NewTransactionRepository(db *gorm.DB) TransactionRepository {
 	return &transactionRepository{
 		DB: db,
 	}
+}
+
+func (t *transactionRepository) CreateTransaction(transaction *models.Transaction) (*models.Transaction, error) {
+	err := t.DB.Create(transaction).Error
+	if err != nil {
+		return nil, err
+	}
+	return transaction, nil
 }
 
 func (t *transactionRepository) GetTransactionByInvoiceID(invoiceID string) (*models.Transaction, error) {
