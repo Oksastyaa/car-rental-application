@@ -17,6 +17,9 @@ type Controller struct {
 }
 
 func RegisterRoutes(e *echo.Echo, c *Controller, jwtSecret []byte) {
+	// health check
+	e.Use(middleware.SentryMiddleware)
+
 	// user routes
 	r := e.Group("/api/v1/users")
 	r.POST("/register", c.UserController.RegisterUser)

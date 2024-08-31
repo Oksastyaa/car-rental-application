@@ -2,8 +2,11 @@ package middleware
 
 import (
 	"errors"
+	"github.com/getsentry/sentry-go"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -68,5 +71,20 @@ func RoleMiddleware(requiredRole string, jwtKey []byte) echo.MiddlewareFunc {
 
 			return next(c)
 		}
+	}
+}
+
+// SentryMiddleware function to log errors to Sentry
+func SentryMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		defer func() {
+			if err := recover(); err != nil {
+				sentry.CurrentHub().Recover(err)
+				sentry.Flush(2 * time.Second)
+				logrus.Errorf("Panic recovered: %v", err)
+				c.Error(echo.NewHTTPError(http.StatusInternalServerError, "Internal server error"))
+			}
+		}()
+		return next(c)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	sentryecho "github.com/getsentry/sentry-go/echo"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -29,7 +30,10 @@ func main() {
 		logrus.Fatalf("Error loading .env file: %v", err)
 	}
 
-	// xendit client
+	// Initialize Sentry
+	config.InitSentry()
+
+	// Initialize Xendit
 	config.InitXendit()
 
 	// initialize database connection
@@ -57,7 +61,11 @@ func main() {
 	// middleware
 	e.Use(pkg.LogrusLogger)
 	e.Use(middleware.Recover())
-
+	e.Use(sentryecho.New(sentryecho.Options{
+		Repanic:         true,
+		WaitForDelivery: true,
+		Timeout:         time.Second * 2,
+	}))
 	// register routes
 	routes.RegisterRoutes(e, c, []byte(os.Getenv("JWT_SECRET")))
 	startServer(e)
