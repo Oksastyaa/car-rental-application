@@ -50,8 +50,8 @@ func (uc *userController) RegisterUser(c echo.Context) error {
 	}
 
 	return pkg.RespondJSON(c, http.StatusCreated, map[string]any{
-		"user_id": user.ID,
-		"email":   user.Email,
+		"email": user.Email,
+		"role":  user.Role,
 	}, "User created successfully")
 }
 

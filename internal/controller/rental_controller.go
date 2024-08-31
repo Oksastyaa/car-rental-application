@@ -24,25 +24,38 @@ type rentalController struct {
 func (r *rentalController) BookCar(c echo.Context) error {
 	var rental models.Rental
 
-	// Ambil user dari token JWT
-	userToken := c.Get("user").(*jwt.Token)
+	userToken, ok := c.Get("user").(*jwt.Token)
+	if !ok {
+		return pkg.RespondJSON(c, http.StatusUnauthorized, nil, "Unauthorized: Invalid token")
+	}
 
-	claims := userToken.Claims.(jwt.MapClaims)
+	claims, ok := userToken.Claims.(jwt.MapClaims)
+	if !ok {
+		return pkg.RespondJSON(c, http.StatusUnauthorized, nil, "Unauthorized: Invalid claims")
+	}
 
-	userId := claims["id"].(float64)
+	userId, ok := claims["id"].(float64)
+	if !ok {
+		return pkg.RespondJSON(c, http.StatusUnauthorized, nil, "Unauthorized: Invalid user ID")
+	}
 
-	// Bind request body ke struct Rental
 	if err := c.Bind(&rental); err != nil {
 		return pkg.RespondJSON(c, http.StatusBadRequest, nil, "Failed to bind request body: "+err.Error())
 	}
 
-	// Set UserID dari token JWT
+	if rental.TotalCost <= 0 {
+		return pkg.RespondJSON(c, http.StatusBadRequest, nil, "Invalid rental data: Total cost must be greater than zero")
+	}
+
 	rental.UserID = uint(userId)
 
-	// Panggil service untuk booking mobil
 	bookedRental, err := r.rentalService.BookCar(&rental)
 	if err != nil {
-		return pkg.RespondJSON(c, http.StatusInternalServerError, nil, "Failed to book car: "+err.Error())
+		return pkg.RespondJSON(c, http.StatusInternalServerError, bookedRental, "Failed to book car: "+err.Error())
+	}
+
+	if bookedRental == nil {
+		return pkg.RespondJSON(c, http.StatusInternalServerError, bookedRental, "Failed to book car: Rental object is nil")
 	}
 
 	// Return response

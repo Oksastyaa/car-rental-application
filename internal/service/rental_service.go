@@ -6,6 +6,7 @@ import (
 	"car-rental-application/internal/repository"
 	"car-rental-application/pkg"
 	"context"
+	"errors"
 	"fmt"
 	"github.com/xendit/xendit-go/v6/invoice"
 	"time"
@@ -33,7 +34,7 @@ func NewRentalService(rentalRepo repository.RentalRepository, transactionRepo re
 
 func (s *rentalService) BookCar(rental *models.Rental) (*models.Rental, error) {
 	if rental.TotalCost <= 0 {
-		return nil, nil
+		return nil, fmt.Errorf("total cost must be greater than 0")
 	}
 
 	newRental, err := s.rentalRepo.CreateRental(rental)
@@ -44,31 +45,39 @@ func (s *rentalService) BookCar(rental *models.Rental) (*models.Rental, error) {
 		return nil, nil
 	}
 
-	newRental.Transaction.RentalID = newRental.ID
-	newRental.Transaction.UserID = newRental.UserID
-	newRental.Transaction.InvoiceID = fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
-	newRental.Transaction.Amount = rental.TotalCost
-	newRental.Transaction.TransactionStatus = "unpaid"
-	newRental.Transaction.PaymentMethod = rental.Transaction.PaymentMethod
-	newRental.Transaction.PaymentProvider = rental.Transaction.PaymentProvider
-	newRental.Transaction.Description = fmt.Sprintf("Pembayaran rental mobil untuk %s", rental.RentalStartDate.Format("2006-01-02"))
-
 	user, err := s.userRepo.FindByID(rental.UserID)
 	if err != nil {
 		return nil, nil
 	}
 	userEmail := user.Email
+
+	transaction := &models.Transaction{
+		UserID:            newRental.UserID,
+		RentalID:          newRental.ID,
+		Amount:            newRental.TotalCost,
+		TransactionStatus: "unpaid",
+		TransactionDate:   time.Now(),
+		InvoiceID:         fmt.Sprintf("trx-%s", time.Now().Format("20060102150405")),
+		PaymentMethod:     rental.Transaction.PaymentMethod,
+		PaymentProvider:   rental.Transaction.PaymentProvider,
+		Description:       fmt.Sprintf("Pembayaran rental mobil untuk Mr/Mrs %s start dari tanggal %s sampai dengan tanggal %s", userEmail, rental.RentalStartDate.Format("2006-01-02"), rental.RentalEndDate.Format("2006-01-02")),
+	}
+
+	if err, _ := s.transactionRepo.CreateTransaction(transaction); err != nil {
+		return nil, errors.New("failed to create transaction")
+	}
+
 	invoiceID := fmt.Sprintf("trx-%s", time.Now().Format("20060102150405"))
 	invoiceUrl, err := s.CreateXenditInvoice(invoiceID, userEmail, rental.TotalCost)
 	if err != nil {
-		return nil, nil
+		return nil, fmt.Errorf("failed to create Xendit invoice: %w", err)
 	}
 
 	subject := "Konfirmasi Booking"
 	emailBody := fmt.Sprintf("Booking Anda telah berhasil dibuat. Total yang harus dibayar adalah Rp%.2f. Silakan bayar melalui tautan berikut: %s", rental.TotalCost, invoiceUrl)
 	err = pkg.SendEmail(userEmail, subject, emailBody)
 	if err != nil {
-		return nil, nil
+		return nil, fmt.Errorf("failed to send email: %w", err)
 	}
 
 	return newRental, nil
